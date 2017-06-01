@@ -163,6 +163,26 @@ export class OverlayComponent implements OnInit {
 
   getSPARQLTypes(): void {
     //TODO Lesen Sie mittels SPARQL die gewünschten Daten (wie in der Angabe beschrieben) aus und speichern Sie diese im SessionStorage
+
+    /*
+     PREFIX owl: <http://www.w3.org/2002/07/owl#>
+     SELECT ?label ?url WHERE
+     {
+     ?c dbo:product ?thingy .
+     ?thingy dbo:thumbnail ?url .
+     {
+     SELECT DISTINCT ?label ?Thing AS ?thingy WHERE
+     {
+     ?Thing rdf:type owl:Thing .
+     ?Thing rdfs:label ?label .
+     ?Thing dct:subject dbc:Home_automation .
+     FILTER (LANG(?label)='de') .
+     }
+     }
+     }
+     group by ?label ?url
+
+     */
   }
 
 
