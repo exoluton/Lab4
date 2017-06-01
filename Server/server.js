@@ -26,6 +26,13 @@ var invalid_tokens = [];
 var system_start = new Date();
 var failed_logins = 0;
 
+var twitter_client = new twitter({
+    consumer_key: 'GZ6tiy1XyB9W0P4xEJudQ',
+    consumer_secret: 'gaJDlW0vf7en46JwHAOkZsTHvtAiZ3QUd2mD1x26J9w',
+    access_token_key: '1366513208-MutXEbBMAVOwrbFmZtj1r4Ih2vcoHGHE2207002',
+    access_token_secret: 'RMPWOePlus3xtURWRVnv1TgrjTyK7Zk33evp4KKyA'
+});
+
 app.set('secret', "superSecret");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -79,6 +86,14 @@ app.post("/createDevice", function (req, res) {
                 //  - die benötigte Bibliothek ist bereits eingebunden
                 //  - siehe https://www.npmjs.com/package/twitter für eine Beschreibung der Bibliothek
                 //  - verwenden Sie getTwitterPublicationString(groupNum, uuid, date) um den Publication String zu erstellen
+                var d = new Date();
+                twitter_client.post('statuses/update', {status: getTwitterPublicationString(52, id.toString(), d)})
+                    .then(function (tweet) {
+                        console.log("Erfolgreicht getweetet.");
+                    })
+                    .catch(function (error) {
+                        console.log("Fehler bei Tweet: \n" + error);
+                    });
             }
         });
     } else {
