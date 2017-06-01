@@ -7,6 +7,7 @@ var app = express();
 var fs = require("fs");
 var expressWs = require('express-ws')(app);
 var http = require('http');
+var https = require('https');
 
 var simulation = require('./simulation.js');
 var bodyParser = require('body-parser');
@@ -585,4 +586,20 @@ var server = app.listen(8081, function () {
     console.log("Big Smart Home Server listening at http://%s:%s", host, port);
 
 });
+var options = {
+    key: fs.readFileSync('resources/domain.key'),
+    cert: fs.readFileSync('resources/domain.crt')
+};
+var secureServer = https.createServer(options, app);
+secureServer.listen(8082, function () {
 
+    "use strict";
+    readUser();
+    readDevices();
+
+    var host = secureServer.address().address;
+    var port = secureServer.address().port;
+
+    console.log("Big Smart Home Server listening at https://%s:%s", host, port);
+
+});
