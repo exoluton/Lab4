@@ -178,6 +178,7 @@ export class OverlayComponent implements OnInit {
     xhr.open('GET', queryUrl);
     xhr.onload = function() {
       if (xhr.status === 200) {
+      //TODO hier statt alert irgendwie die daten an die richtige stelle weiterleiten
         alert('User\'s name is ' + xhr.responseText);
       }
       else {
