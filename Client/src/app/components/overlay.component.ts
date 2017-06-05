@@ -163,26 +163,28 @@ export class OverlayComponent implements OnInit {
 
   getSPARQLTypes(): void {
     //TODO Lesen Sie mittels SPARQL die gewünschten Daten (wie in der Angabe beschrieben) aus und speichern Sie diese im SessionStorage
+    var url = "http://dbpedia.org/sparql";
+    var query = "SELECT ?label ?url WHERE {?c dbo:product ?thingy . " +
+      "?thingy dbo:thumbnail ?url . " +
+      "{ SELECT DISTINCT ?label ?Thing AS ?thingy WHERE " +
+      "{ ?Thing rdf:type owl:Thing ." +
+      " ?Thing rdfs:label ?label ." +
+      " ?Thing dct:subject dbc:Home_automation ." +
+      " FILTER (LANG(?label)='de') . " +
+      "} } } group by ?label ?url";
 
-    /*
-     PREFIX owl: <http://www.w3.org/2002/07/owl#>
-     SELECT ?label ?url WHERE
-     {
-     ?c dbo:product ?thingy .
-     ?thingy dbo:thumbnail ?url .
-     {
-     SELECT DISTINCT ?label ?Thing AS ?thingy WHERE
-     {
-     ?Thing rdf:type owl:Thing .
-     ?Thing rdfs:label ?label .
-     ?Thing dct:subject dbc:Home_automation .
-     FILTER (LANG(?label)='de') .
-     }
-     }
-     }
-     group by ?label ?url
-
-     */
+    var queryUrl = encodeURI(url+"?query="+query);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', queryUrl);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        alert('User\'s name is ' + xhr.responseText);
+      }
+      else {
+        alert('Request failed.  Returned status of ' + xhr.status);
+      }
+    };
+    xhr.send();
   }
 
 
